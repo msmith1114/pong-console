@@ -119,6 +119,28 @@ class Game {
     }
 
 
+    void handleInput(Paddle &paddle){
+        int ch = getch();
+        if(ch == KEY_UP){
+            if(paddle._posy < 2){
+                paddle._posy = paddle._posy;
+            }
+            else {
+                paddle._posy--; 
+            }
+            
+        }
+        else if(ch == KEY_DOWN){
+            if(paddle._posy > boardHeight-paddle._height-2){
+                paddle._posy = paddle._posy;
+            }
+            else {
+                paddle._posy++; 
+            }
+        }
+
+    }
+
 
     void checkWallCollision(Ball &ball, Player &player1, Player &player2){
         if(ball._posy > boardHeight-3){
@@ -162,10 +184,11 @@ class Game {
     }
 
     void PlayGame(){
-        for(int i=0;i < 5000000;i++){
+        for(;;){
         usleep(100000);
         erase();
         board.DrawBoard();
+        handleInput(paddle1);
         paddle1.drawPaddle();
         paddle2.drawPaddle();
         checkPaddleCollision(ball, paddle1, paddle2);
@@ -190,6 +213,7 @@ int main()
     noecho();
     curs_set(0);
     keypad(stdscr, TRUE);
+    nodelay(stdscr, TRUE);
     erase();
     Game game;
     game.PlayGame();
