@@ -141,19 +141,27 @@ class Game {
 
     }
 
+    void paddleAI(Ball &ball, Paddle &paddle){
+        if(ball._posy < boardHeight/2 && paddle._posy > 2){
+            paddle._posy--;
+        }
+        else if(ball._posy > boardHeight/2 && paddle._posy < boardHeight-paddle._height-2)
+        {
+            paddle._posy++;
+        }
+        
+    }
+
 
     void checkWallCollision(Ball &ball, Player &player1, Player &player2){
         if(ball._posy > boardHeight-3){
             ball._dy = -1;
-            printw("one");
         }
         else if(ball._posy < 0+2){
             ball._dy = 1;
-            printw("two");
         }
         else if(ball._posx > boardWidth-3){
             ball._dx = -1;
-            printw("three");
             player1._score++;
             ball._posx = boardWidth/2+3;
             ball._posy = boardHeight/2;
@@ -161,7 +169,6 @@ class Game {
         }
         else if(ball._posx < 0+2){
             ball._dx = 1;
-            printw("four");
             player2._score++;
             ball._posx = boardWidth/2-2;
             ball._posy = boardHeight/2;
@@ -174,12 +181,9 @@ class Game {
     void checkPaddleCollision(Ball &ball, Paddle &paddle1, Paddle &paddle2){
         if(ball._posx < paddle1._posx+2 && ball._posy > paddle1._posy && ball._posy < paddle1._posy+paddle1._height){
             ball._dx = 1;
-            printw("paddleL");
-
         }
         else if(ball._posx > paddle2._posx-2 && ball._posy > paddle2._posy && ball._posy < paddle2._posy+paddle2._height){
             ball._dx = -1;
-            printw("paddleR");
         }
     }
 
@@ -189,6 +193,7 @@ class Game {
         erase();
         board.DrawBoard();
         handleInput(paddle1);
+        paddleAI(ball,paddle2);
         paddle1.drawPaddle();
         paddle2.drawPaddle();
         checkPaddleCollision(ball, paddle1, paddle2);
